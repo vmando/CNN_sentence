@@ -1,4 +1,4 @@
-## Convolutional Neural Networks for Text Classification for binary-tags augmented sentences
+## Convolutional Neural Networks for Text Classification with binary-tags augmented sentences
 This is a fork from [Yoon Kim repository](https://github.com/yoonkim/CNN_sentence) for sentence classification using Convolutional Neural Networks.
 
 The input to the network are sentences where each token has been labeled with a binary tag (for instance a Named Entity Recognition tag).
@@ -12,7 +12,7 @@ https://code.google.com/p/word2vec/
 
 
 ### Data Preprocessing
-The raw data is assumed to be the (tab-seprated) juxaposition of the sentence and its associated label sequence. See the files `dataset.pos` and `dataset.neg` for an example.
+The raw data is assumed to be the (tab-separated) juxaposition of the sentence and its associated label sequence. See the files `dataset.pos` and `dataset.neg` for an example.
 
 To process the raw data, run
 
