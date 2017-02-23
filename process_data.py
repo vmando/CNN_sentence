@@ -15,7 +15,8 @@ def build_data_cv(data_folder, cv=10, clean_string=True):
     with open(pos_file, "rb") as f:
         for line in f:       
             rev = []
-            rev.append(line.strip())
+            (sentence, tag_sequence) = line.split("\t")
+            rev.append(sentence.strip())
             if clean_string:
                 orig_rev = clean_str(" ".join(rev))
             else:
@@ -25,13 +26,15 @@ def build_data_cv(data_folder, cv=10, clean_string=True):
                 vocab[word] += 1
             datum  = {"y":1, 
                       "text": orig_rev,                             
+                      "tag_sequence": tag_sequence,
                       "num_words": len(orig_rev.split()),
                       "split": np.random.randint(0,cv)}
             revs.append(datum)
     with open(neg_file, "rb") as f:
         for line in f:       
             rev = []
-            rev.append(line.strip())
+            (sentence, tag_sequence) = line.split("\t")
+            rev.append(sentence.strip())
             if clean_string:
                 orig_rev = clean_str(" ".join(rev))
             else:
@@ -41,6 +44,7 @@ def build_data_cv(data_folder, cv=10, clean_string=True):
                 vocab[word] += 1
             datum  = {"y":0, 
                       "text": orig_rev,                             
+                      "tag_sequence": tag_sequence,
                       "num_words": len(orig_rev.split()),
                       "split": np.random.randint(0,cv)}
             revs.append(datum)
@@ -124,7 +128,7 @@ def clean_str_sst(string):
 
 if __name__=="__main__":    
     w2v_file = sys.argv[1]     
-    data_folder = ["rt-polarity.pos","rt-polarity.neg"]    
+    data_folder = [dataset.pos,dataset.neg]    
     print "loading data...",        
     revs, vocab = build_data_cv(data_folder, cv=10, clean_string=True)
     max_l = np.max(pd.DataFrame(revs)["num_words"])
@@ -138,6 +142,7 @@ if __name__=="__main__":
     print "num words already in word2vec: " + str(len(w2v))
     add_unknown_words(w2v, vocab)
     W, word_idx_map = get_W(w2v)
+    print W.shape
     rand_vecs = {}
     add_unknown_words(rand_vecs, vocab)
     W2, _ = get_W(rand_vecs)
